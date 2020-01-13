@@ -11,9 +11,11 @@
 import socket, sys
 
 def send(sock, message):
+    print('>' + message.decode())
     sock.send(b"\r\n" + message + b"\r\n")
 
 def getATCommand(sock, line):
+    print('<' + line.decode())
     if b"BRSF" in line:
         send(sock, b"+BRSF:20")
         send(sock, b"OK")
@@ -53,7 +55,7 @@ def main():
     BT_ADDRESS = sys.argv[1]
     
     s = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
-    s.connect((BT_ADDRESS, 4))
+    s.connect((BT_ADDRESS, 3))
 
     while getATCommand(s, s.recv(128)):
         pass
